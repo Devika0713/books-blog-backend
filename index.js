@@ -8,10 +8,13 @@ const postRoute = require("./routes/posts");
 const catRoute = require("./routes/categories");
 const multer = require("multer");
 const path = require("path");
+const cors = require("cors");
 
 dotenv.config();
 app.use(express.json());
 app.use("/images", express.static(path.join(__dirname, "/images")));
+
+app.use(cors());
 
 //Connect using mongo db atlas
 //Create schemas
