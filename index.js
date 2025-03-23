@@ -43,7 +43,7 @@ app.use("/api/posts", postRoute);
 app.use("/api/categories", catRoute);
 
 app.use("/", (req, res) => {
-  console.log("This is the main url");
+  res.send("Welcome to Ink & Innovation");
 });
 //creates a http server
 app.listen("5000", () => {
