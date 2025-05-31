@@ -10,6 +10,7 @@ const multer = require("multer");
 const path = require("path");
 const cors = require("cors");
 const { BlobServiceClient } = require("@azure/storage-blob");
+const mime = require("mime-types");
 
 //03/05  TO DO - The app deployed is not connected to DB - check the connection string and env file
 dotenv.config();
@@ -62,9 +63,11 @@ app.post("/api/upload", upload.single("file"), async (req, res) => {
     // Use the original file name or req.body.name
     const blobName = req.body.name || req.file.originalname;
     const blockBlobClient = containerClient.getBlockBlobClient(blobName);
-
+    const contentType = mime.lookup(blobName) || "application/octet-stream";
     // Upload buffer
-    await blockBlobClient.uploadData(req.file.buffer);
+    await blockBlobClient.uploadData(req.file.buffer, {
+      blobHTTPHeaders: { blobContentType: contentType },
+    });
 
     // Get the URL
     const url = blockBlobClient.url;
